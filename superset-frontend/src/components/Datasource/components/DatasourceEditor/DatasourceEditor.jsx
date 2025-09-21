@@ -750,7 +750,10 @@ class DatasourceEditor extends PureComponent {
         f.children.length > 0,
     );
     this.setState({ folders: userMadeFolders });
-    this.onDatasourceChange({ ...this.state.datasource, folders: userMadeFolders });
+    this.onDatasourceChange({
+      ...this.state.datasource,
+      folders: userMadeFolders,
+    });
   }
 
   setColumns(obj) {
