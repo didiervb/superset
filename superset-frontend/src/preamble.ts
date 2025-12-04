@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { setConfig as setHotLoaderConfig } from 'react-hot-loader';
 // eslint-disable-next-line no-restricted-imports
 import {
   configure,
@@ -48,7 +47,7 @@ configure();
 
 // Set hot reloader config
 if (process.env.WEBPACK_MODE === 'development') {
-  setHotLoaderConfig({ logLevel: 'debug', trackTailUpdates: false });
+  // React Refresh is now used for hot module replacement
 }
 
 // Grab initial bootstrap data
