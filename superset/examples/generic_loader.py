@@ -30,6 +30,7 @@ from superset.models.core import Database
 from superset.sql.parse import Table
 from superset.utils import json
 from superset.utils.database import get_example_database
+from superset.utils.decorators import transaction
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +49,7 @@ def serialize_numpy_arrays(obj: Any) -> Any:  # noqa: C901
     return obj
 
 
+@transaction()
 def load_duckdb_table(  # noqa: C901
     duckdb_file: str,
     table_name: str,
@@ -168,7 +170,7 @@ def load_duckdb_table(  # noqa: C901
         tbl.fetch_metadata()
 
     db.session.merge(tbl)
-    db.session.commit()
+    # Transaction handled by @transaction decorator
 
     return tbl
 
@@ -196,6 +198,7 @@ def create_generic_loader(
     if table_name is None:
         table_name = duckdb_file
 
+    @transaction()
     def loader(
         only_metadata: bool = False,
         force: bool = False,
@@ -215,7 +218,7 @@ def create_generic_loader(
         if description and tbl:
             tbl.description = description
             db.session.merge(tbl)
-            db.session.commit()
+            # Transaction handled by @transaction decorator
 
     # Set function name and docstring
     loader.__name__ = f"load_{duckdb_file}"
